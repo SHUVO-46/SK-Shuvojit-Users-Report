@@ -1,6 +1,6 @@
 const users = [
     { username: 'Monirul', password: 'Monirul@1', name: 'Monirul Islam' },
-    { username: 'DMIN2', password: 'ADMIN2', name: 'Pranto Mondal' },
+    { username: 'prantomondal878', password: 'Pranto123', name: 'Pranto Mondal' },
     { username: 'ADMIN3', password: 'ADMIN3', name: 'Somiron Mondal' },
     { username: 'ADMIN4', password: 'ADMIN4', name: 'Partho Sarkar' },
     { username: 'tufan', password: 'admin07', name: 'TUFAN (SUB-ADMIN)' },
