@@ -1,17 +1,14 @@
-const okUIDs = ["111", "222", "333", "444"];  // এখানে আগে থেকে দেওয়া OK UID গুলো থাকবে
-
 function login() {
-    const u = document.getElementById("username").value.trim();
-    const p = document.getElementById("password").value.trim();
-    const user = users.find(x => x.username === u && x.password === p);
-    
-    if (user) {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const found = users.find(u => u.username === user && u.password === pass);
+
+    if (found) {
         document.getElementById("login-section").style.display = "none";
-        document.getElementById("main-section").style.display = "block";
-        document.getElementById("welcome-text").innerText = `Welcome, ${user.name}`;
-        document.getElementById("welcome-audio").play();
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("display-name").innerText = found.name;
     } else {
-        document.getElementById("login-error").innerText = "Invalid credentials!";
+        document.getElementById("login-error").innerText = "Invalid Credentials!";
     }
 }
 
@@ -19,60 +16,74 @@ function processUID() {
     const input = document.getElementById("uid-input").value.trim();
     if (!input) return;
 
-    let uidList = input.split(/\s+/);
-    
-    const totalUIDs = uidList.length;
-    const uniqueUIDs = [...new Set(uidList)];
-    const duplicateCount = totalUIDs - uniqueUIDs.length;
-    
-    let okCount = 0;
-    let backCount = 0;
-    const tbody = document.querySelector("#result-table tbody");
-    tbody.innerHTML = "";
+    const uidArray = input.split(/\s+/);
+    const uniqueUIDs = [...new Set(uidArray)];
+    const duplicates = uidArray.length - uniqueUIDs.length;
 
+    let ok = [], back = [];
     uniqueUIDs.forEach(uid => {
-        const row = document.createElement("tr");
-        const uidCell = document.createElement("td");
-        const statusCell = document.createElement("td");
-
-        uidCell.innerText = uid;
-        
-        if (okUIDs.includes(uid)) {
-            statusCell.innerText = "✅ OK";
-            statusCell.className = "ok";
-            okCount++;
-        } else {
-            statusCell.innerText = "🚫 Back";
-            statusCell.className = "back";
-            backCount++;
-        }
-        
-        row.appendChild(uidCell);
-        row.appendChild(statusCell);
-        tbody.appendChild(row);
+        if (okUIDs.includes(uid)) ok.push(uid);
+        else back.push(uid);
     });
 
     document.getElementById("total-uid").innerText = uniqueUIDs.length;
-    document.getElementById("ok-uid").innerText = okCount;
-    document.getElementById("back-uid").innerText = backCount;
-    document.getElementById("duplicate-count").innerText = duplicateCount;
+    document.getElementById("ok-uid").innerText = ok.length;
+    document.getElementById("back-uid").innerText = back.length;
+    document.getElementById("duplicate-uid").innerText = duplicates;
 
-    const memberRate = parseFloat(document.getElementById("member-rate").innerText);
-    const bulkRate = parseFloat(document.getElementById("bulk-rate").innerText);
-    const rate = okCount >= 100 ? bulkRate : memberRate;
-    
-    animateAmount(okCount * rate);
+    const rate = ok.length < 100 ? 5 : 10;
+    const amount = ok.length * rate;
+    document.getElementById("amount").innerText = amount;
+
+    const tbody = document.querySelector("#result-table tbody");
+    tbody.innerHTML = "";
+    ok.forEach(uid => {
+        const row = `<tr><td>${uid}</td><td class="ok">✅ OK</td></tr>`;
+        tbody.innerHTML += row;
+    });
+    back.forEach(uid => {
+        const row = `<tr><td>${uid}</td><td class="back">🚫 Back</td></tr>`;
+        tbody.innerHTML += row;
+    });
 }
 
-function animateAmount(targetAmount) {
-    let current = 0;
-    const amountEl = document.getElementById("amount");
-    const interval = setInterval(() => {
-        current += Math.ceil(targetAmount / 50);
-        if (current >= targetAmount) {
-            current = targetAmount;
-            clearInterval(interval);
-        }
-        amountEl.innerText = current.toFixed(2);
-    }, 20);
+function copyOK() {
+    const ok = [];
+    document.querySelectorAll(".ok").forEach(td => {
+        ok.push(td.parentElement.firstChild.textContent);
+    });
+    navigator.clipboard.writeText(ok.join("\n"));
+}
+
+function copyBack() {
+    const back = [];
+    document.querySelectorAll(".back").forEach(td => {
+        back.push(td.parentElement.firstChild.textContent);
+    });
+    navigator.clipboard.writeText(back.join("\n"));
+}
+
+function copyDuplicate() {
+    const input = document.getElementById("uid-input").value.trim();
+    if (!input) return;
+    const uidArray = input.split(/\s+/);
+    const seen = {};
+    const duplicates = [];
+    uidArray.forEach(uid => {
+        if (seen[uid]) duplicates.push(uid);
+        else seen[uid] = true;
+    });
+    navigator.clipboard.writeText(duplicates.join("\n"));
+}
+
+function downloadReport() {
+    let text = "UID Report:\n";
+    document.querySelectorAll("#result-table tbody tr").forEach(row => {
+        text += row.children[0].innerText + " - " + row.children[1].innerText + "\n";
+    });
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "uid-report.txt";
+    a.click();
 }
