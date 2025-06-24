@@ -1,5 +1,15 @@
 let currentUser = null;
 
+// আগেই নির্দিষ্ট OK UID লিস্ট
+const okUidList = [
+    "12345",
+    "67890",
+    "11111",
+    "22222",
+    "33333"
+    // এখানেই তুমি যত UID ঠিক করতে চাও বসিয়ে রাখো
+];
+
 function login() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -16,7 +26,12 @@ function login() {
 
 function processUID() {
     const uidText = document.getElementById('uid-input').value.trim();
-    const uidList = uidText.split(/\s+/).filter(uid => uid);
+    let uidList = uidText.split(/\s+/).filter(uid => uid);
+
+    const originalCount = uidList.length;
+    // ডুপ্লিকেট বাদ দিয়ে ইউনিক লিস্ট
+    uidList = [...new Set(uidList)];
+    const duplicateCount = originalCount - uidList.length;
 
     let okCount = 0;
     let returnCount = 0;
@@ -24,12 +39,12 @@ function processUID() {
     tbody.innerHTML = '';
 
     uidList.forEach(uid => {
-        const status = Math.random() < 0.7 ? '✅ OK' : '🚫 Return';
+        const status = okUidList.includes(uid) ? '✅ OK' : '🚫 Back';
 
         if (status === '✅ OK') okCount++;
         else returnCount++;
 
-        const row = `<tr>
+        const row = `<tr style="color: ${status === '✅ OK' ? 'green' : 'red'}">
                         <td>${uid}</td>
                         <td>${status}</td>
                     </tr>`;
@@ -39,9 +54,10 @@ function processUID() {
     document.getElementById('total-uid').innerText = uidList.length;
     document.getElementById('ok-uid').innerText = okCount;
     document.getElementById('return-uid').innerText = returnCount;
+    document.getElementById('duplicate-count').innerText = duplicateCount;
 
-    const memberRate = 5; // Member Rate
-    const id100Rate = 4;  // 100+ ID Rate
+    const memberRate = 5;
+    const id100Rate = 4;
 
     let totalAmount = 0;
     if (uidList.length >= 100) {
