@@ -7,49 +7,40 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div id="login-section">
-    <h2>LOGIN</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <p id="login-error"></p>
-</div>
-
-<div id="main-section" style="display: none;">
-    <h1>☠️ SK SHUVOJIT ☠️</h1>
-    <h2 id="welcome-text"></h2>
-    
-    <div class="rate-info">
-        <p>30+ Friends Two Factor Report</p>
-        <p>Member Rate: <span id="member-rate">2</span> tk</p>
-        <p>100+ ID Rate: <span id="bulk-rate">1.5</span> tk</p>
+    <div id="login-section">
+        <h2>LOGIN</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="login-error"></p>
     </div>
 
-    <textarea id="uid-input" placeholder="Paste UID list here..."></textarea>
-    <button onclick="processUID()">Submit</button>
+    <div id="dashboard" style="display: none;">
+        <h1>☠️ SK-SHUVOJIT ☠️</h1>
+        <h2>Welcome, <span id="display-name"></span></h2>
+        <textarea id="uid-input" placeholder="Paste UID list here..."></textarea>
+        <button onclick="processUID()">Submit</button>
 
-    <div id="report">
-        <h3>Report</h3>
-        <p>Total UID: <span id="total-uid">0</span></p>
-        <p>✅ OK UID: <span id="ok-uid">0</span></p>
-        <p>🚫 Back UID: <span id="back-uid">0</span></p>
-        <p>♻️ Duplicate Removed: <span id="duplicate-count">0</span></p>
-        <p>💵 Total Amount: <span id="amount">0</span> tk</p>
-        
-        <table id="result-table">
-            <thead>
-                <tr>
-                    <th>UID</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div id="report">
+            <h3>Report</h3>
+            <p>Total UID: <span id="total-uid">0</span></p>
+            <p>✅ OK UID: <span id="ok-uid">0</span> <button onclick="copyOK()">Copy</button></p>
+            <p>🚫 Back UID: <span id="back-uid">0</span> <button onclick="copyBack()">Copy</button></p>
+            <p>🔁 Duplicate UID: <span id="duplicate-uid">0</span> <button onclick="copyDuplicate()">Copy</button></p>
+            <p>💵 Total Amount: <span id="amount">0</span> TK</p>
+            <button onclick="downloadReport()">Download TXT Report</button>
+            
+            <table id="result-table">
+                <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
-</div>
-
-<audio id="welcome-audio" src="welcome.mp3"></audio>
 
 <script src="users.js"></script>
 <script src="script.js"></script>
