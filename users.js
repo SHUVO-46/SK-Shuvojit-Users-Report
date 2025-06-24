@@ -4,7 +4,7 @@ const users = [
     { username: 'ADMIN3', password: 'ADMIN3', name: 'Somiron Mondal' },
     { username: 'ADMIN4', password: 'ADMIN4', name: 'Partho Sarkar' },
     { username: 'tufan', password: 'admin07', name: 'TUFAN (SUB-ADMIN)' },
-    { username: 'ADMIN6', password: 'ADMIN6', name: 'Nitish Kumar' },
+    { username: 'Nitish', password: '347685', name: 'Nitish Kumar' },
     { username: 'Bappy0203', password: 'Bappy2003', name: 'Ariyan Bappy' },
     { username: 'ADMIN8', password: 'ADMIN8', name: 'RAJ' },
     { username: 'ADMIN9', password: 'ADMIN9', name: 'Rana Vai' },
