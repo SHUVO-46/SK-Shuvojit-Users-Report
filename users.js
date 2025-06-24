@@ -12,7 +12,7 @@ const users = [
     { username: 'Sunna@123', password: 'Sunna@2006', name: 'Amdad Ahmed' },
     { username: 'ADMIN12', password: 'ADMIN12', name: 'Nirob Raj' },
     { username: '@apurbo2122', password: 'Apurbo2122', name: 'Apurbo Sarkar' },
-    { username: 'ADMIN14', password: 'ADMIN14', name: 'Avijit Mondal' },
+    { username: '@avi4321', password: 'Avijit4321', name: 'Avijit Mondal' },
 ];
 
 const okUIDs = [
