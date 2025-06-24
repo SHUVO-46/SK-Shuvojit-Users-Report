@@ -7,11 +7,11 @@ const users = [
     { username: 'Nitish', password: '347685', name: 'Nitish Kumar' },
     { username: 'Bappy0203', password: 'Bappy2003', name: 'Ariyan Bappy' },
     { username: 'ADMIN8', password: 'ADMIN8', name: 'RAJ' },
-    { username: 'ADMIN9', password: 'ADMIN9', name: 'Rana Vai' },
+    { username: 'rana120', password: '@@rana12', name: 'Rana Vai' },
     { username: 'ADMIN10', password: 'ADMIN10', name: 'Sudipto Mondal' },
-    { username: 'ADMIN11', password: 'ADMIN11', name: 'Amdad Ahmed' },
+    { username: 'Sunna@123', password: 'Sunna@2006', name: 'Amdad Ahmed' },
     { username: 'ADMIN12', password: 'ADMIN12', name: 'Nirob Raj' },
-    { username: 'ADMIN13', password: 'ADMIN13', name: 'Apurbo Sarkar' },
+    { username: '@apurbo2122', password: 'Apurbo2122', name: 'Apurbo Sarkar' },
     { username: 'ADMIN14', password: 'ADMIN14', name: 'Avijit Mondal' },
 ];
 
