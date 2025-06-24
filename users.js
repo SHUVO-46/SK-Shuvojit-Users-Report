@@ -14,3 +14,7 @@ const users = [
     { username: 'ADMIN13', password: 'ADMIN13', name: 'Apurbo Sarkar' },
     { username: 'ADMIN14', password: 'ADMIN14', name: 'Avijit Mondal' },
 ];
+
+const okUIDs = [
+    "111111", "222222", "333333" // এখানে তোমার OK UID গুলো বসাও
+];
