@@ -1,85 +1,78 @@
-let currentUser = null;
-
-// আগেই নির্দিষ্ট OK UID লিস্ট
-const okUidList = [
-    "12345",
-    "67890",
-    "11111",
-    "22222",
-    "33333"
-    // এখানেই তুমি যত UID ঠিক করতে চাও বসিয়ে রাখো
-];
+const okUIDs = ["111", "222", "333", "444"];  // এখানে আগে থেকে দেওয়া OK UID গুলো থাকবে
 
 function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (users[username] && users[username].password === password) {
-        currentUser = users[username];
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('main-section').style.display = 'block';
-        document.getElementById('main-section').insertAdjacentHTML('afterbegin', `<h2>Welcome, ${currentUser.name}</h2>`);
+    const u = document.getElementById("username").value.trim();
+    const p = document.getElementById("password").value.trim();
+    const user = users.find(x => x.username === u && x.password === p);
+    
+    if (user) {
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("main-section").style.display = "block";
+        document.getElementById("welcome-text").innerText = `Welcome, ${user.name}`;
+        document.getElementById("welcome-audio").play();
     } else {
-        document.getElementById('login-error').innerText = 'Invalid username or password!';
+        document.getElementById("login-error").innerText = "Invalid credentials!";
     }
 }
 
 function processUID() {
-    const uidText = document.getElementById('uid-input').value.trim();
-    let uidList = uidText.split(/\s+/).filter(uid => uid);
+    const input = document.getElementById("uid-input").value.trim();
+    if (!input) return;
 
-    const originalCount = uidList.length;
-    // ডুপ্লিকেট বাদ দিয়ে ইউনিক লিস্ট
-    uidList = [...new Set(uidList)];
-    const duplicateCount = originalCount - uidList.length;
-
+    let uidList = input.split(/\s+/);
+    
+    const totalUIDs = uidList.length;
+    const uniqueUIDs = [...new Set(uidList)];
+    const duplicateCount = totalUIDs - uniqueUIDs.length;
+    
     let okCount = 0;
-    let returnCount = 0;
+    let backCount = 0;
     const tbody = document.querySelector("#result-table tbody");
-    tbody.innerHTML = '';
+    tbody.innerHTML = "";
 
-    uidList.forEach(uid => {
-        const status = okUidList.includes(uid) ? '✅ OK' : '🚫 Back';
+    uniqueUIDs.forEach(uid => {
+        const row = document.createElement("tr");
+        const uidCell = document.createElement("td");
+        const statusCell = document.createElement("td");
 
-        if (status === '✅ OK') okCount++;
-        else returnCount++;
-
-        const row = `<tr style="color: ${status === '✅ OK' ? 'green' : 'red'}">
-                        <td>${uid}</td>
-                        <td>${status}</td>
-                    </tr>`;
-        tbody.insertAdjacentHTML('beforeend', row);
+        uidCell.innerText = uid;
+        
+        if (okUIDs.includes(uid)) {
+            statusCell.innerText = "✅ OK";
+            statusCell.className = "ok";
+            okCount++;
+        } else {
+            statusCell.innerText = "🚫 Back";
+            statusCell.className = "back";
+            backCount++;
+        }
+        
+        row.appendChild(uidCell);
+        row.appendChild(statusCell);
+        tbody.appendChild(row);
     });
 
-    document.getElementById('total-uid').innerText = uidList.length;
-    document.getElementById('ok-uid').innerText = okCount;
-    document.getElementById('return-uid').innerText = returnCount;
-    document.getElementById('duplicate-count').innerText = duplicateCount;
+    document.getElementById("total-uid").innerText = uniqueUIDs.length;
+    document.getElementById("ok-uid").innerText = okCount;
+    document.getElementById("back-uid").innerText = backCount;
+    document.getElementById("duplicate-count").innerText = duplicateCount;
 
-    const memberRate = 5;
-    const id100Rate = 4;
-
-    let totalAmount = 0;
-    if (uidList.length >= 100) {
-        totalAmount = okCount * id100Rate;
-    } else {
-        totalAmount = okCount * memberRate;
-    }
-
-    animateAmount(totalAmount);
+    const memberRate = parseFloat(document.getElementById("member-rate").innerText);
+    const bulkRate = parseFloat(document.getElementById("bulk-rate").innerText);
+    const rate = okCount >= 100 ? bulkRate : memberRate;
+    
+    animateAmount(okCount * rate);
 }
 
 function animateAmount(targetAmount) {
-    const amountEl = document.getElementById('amount');
-    let currentAmount = 0;
-    const increment = Math.max(1, Math.floor(targetAmount / 100));
-
+    let current = 0;
+    const amountEl = document.getElementById("amount");
     const interval = setInterval(() => {
-        currentAmount += increment;
-        if (currentAmount >= targetAmount) {
-            currentAmount = targetAmount;
+        current += Math.ceil(targetAmount / 50);
+        if (current >= targetAmount) {
+            current = targetAmount;
             clearInterval(interval);
         }
-        amountEl.innerText = currentAmount;
-    }, 10);
+        amountEl.innerText = current.toFixed(2);
+    }, 20);
 }
