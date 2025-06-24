@@ -1,66 +1,69 @@
 let currentUser = null;
 
 function login() {
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const user = users.find(u => u.username === username && u.password === password);
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
-    if (user) {
-        currentUser = user;
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("main-section").style.display = "block";
-        document.getElementById("user-name").innerText = `Welcome, ${user.name}`;
-        playWelcomeVoice(user.name);
+    if (users[username] && users[username].password === password) {
+        currentUser = users[username];
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('main-section').style.display = 'block';
+        document.getElementById('main-section').insertAdjacentHTML('afterbegin', `<h2>Welcome, ${currentUser.name}</h2>`);
     } else {
-        document.getElementById("login-error").innerText = "Invalid credentials!";
+        document.getElementById('login-error').innerText = 'Invalid username or password!';
     }
 }
 
 function processUID() {
-    const uidText = document.getElementById("uid-input").value.trim();
-    const uids = uidText.split("\n").filter(Boolean);
+    const uidText = document.getElementById('uid-input').value.trim();
+    const uidList = uidText.split(/\s+/).filter(uid => uid);
 
-    const total = uids.length;
-    const ok = Math.floor(Math.random() * total);
-    const returned = total - ok;
+    let okCount = 0;
+    let returnCount = 0;
+    const tbody = document.querySelector("#result-table tbody");
+    tbody.innerHTML = '';
 
-    document.getElementById("total-uid").innerText = total;
-    document.getElementById("ok-uid").innerText = ok;
-    document.getElementById("return-uid").innerText = returned;
+    uidList.forEach(uid => {
+        const status = Math.random() < 0.7 ? '✅ OK' : '🚫 Return';
 
-    const memberRate = parseFloat(document.getElementById("member-rate").innerText);
-    const bulkRate = parseFloat(document.getElementById("bulk-rate").innerText);
-    const rate = total >= 100 ? bulkRate : memberRate;
-    const totalAmount = total * rate;
+        if (status === '✅ OK') okCount++;
+        else returnCount++;
+
+        const row = `<tr>
+                        <td>${uid}</td>
+                        <td>${status}</td>
+                    </tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+    });
+
+    document.getElementById('total-uid').innerText = uidList.length;
+    document.getElementById('ok-uid').innerText = okCount;
+    document.getElementById('return-uid').innerText = returnCount;
+
+    const memberRate = 5; // Member Rate
+    const id100Rate = 4;  // 100+ ID Rate
+
+    let totalAmount = 0;
+    if (uidList.length >= 100) {
+        totalAmount = okCount * id100Rate;
+    } else {
+        totalAmount = okCount * memberRate;
+    }
 
     animateAmount(totalAmount);
-
-    const tableBody = document.querySelector("#result-table tbody");
-    tableBody.innerHTML = "";
-    uids.forEach(uid => {
-        const status = Math.random() < 0.5 ? "✅ OK" : "🚫 Return";
-        const row = `<tr><td>${uid}</td><td>${status}</td></tr>`;
-        tableBody.innerHTML += row;
-    });
 }
 
-function animateAmount(amount) {
-    const amountEl = document.getElementById("amount");
-    let current = 0;
-    const step = Math.ceil(amount / 50);
+function animateAmount(targetAmount) {
+    const amountEl = document.getElementById('amount');
+    let currentAmount = 0;
+    const increment = Math.max(1, Math.floor(targetAmount / 100));
 
     const interval = setInterval(() => {
-        current += step;
-        if (current >= amount) {
-            current = amount;
+        currentAmount += increment;
+        if (currentAmount >= targetAmount) {
+            currentAmount = targetAmount;
             clearInterval(interval);
         }
-        amountEl.innerText = current;
-    }, 20);
-}
-
-function playWelcomeVoice(name) {
-    const msg = new SpeechSynthesisUtterance(`শুভজিৎ এর ওয়ার্কার ইনফরমেশন সেক্টরে আপনাকে স্বাগতম ${name}`);
-    msg.lang = 'bn-BD';
-    window.speechSynthesis.speak(msg);
+        amountEl.innerText = currentAmount;
+    }, 10);
 }
