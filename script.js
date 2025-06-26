@@ -31,7 +31,7 @@ function processUID() {
     document.getElementById("back-uid").innerText = back.length;
     document.getElementById("duplicate-uid").innerText = duplicates;
 
-    const rate = ok.length < 100 ? 7.50 : 8.00;
+    const rate = ok.length < 100 ? 8.70 : 9.20;
     const amount = ok.length * rate;
     document.getElementById("amount").innerText = amount;
 
