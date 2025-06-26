@@ -1,7 +1,7 @@
 const users = [
     { username: 'Monirul', password: 'Monirul@1', name: 'Monirul Islam' },
     { username: 'prantomondal878', password: 'Pranto123', name: 'Pranto Mondal' },
-    { username: 'badhon29', password: 'bs2949', name: ''Badhon Das },
+    { username: 'badhon29', password: 'bs2949', name: 'Badhon Das' },
     { username: 'partho0000', password: 'Partho000', name: 'Partho Sarkar' },
     { username: 'tufan', password: 'admin07', name: 'TUFAN (SUB-ADMIN)' },
     { username: 'Nitish', password: '347685', name: 'Nitish Kumar' },
@@ -18,6 +18,7 @@ const users = [
 const okUIDs = [
     "61577291867190",
 "61577297987487",
+"61577384413597",
 "61577317636463",
 "61577321925899",
 "61577325765706",
