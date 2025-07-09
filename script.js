@@ -38,11 +38,11 @@ function processUID() {
     const tbody = document.querySelector("#result-table tbody");
     tbody.innerHTML = "";
     ok.forEach(uid => {
-        const row = `<tr><td>${uid}</td><td class="ok">✅ OK</td></tr>`;
+        const row = `<tr><td>${uid}</td><td class="ok"> OK</td></tr>`;
         tbody.innerHTML += row;
     });
     back.forEach(uid => {
-        const row = `<tr><td>${uid}</td><td class="back">🚫 Back</td></tr>`;
+        const row = `<tr><td>${uid}</td><td class="back"> Back</td></tr>`;
         tbody.innerHTML += row;
     });
 }
